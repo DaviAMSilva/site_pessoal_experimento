@@ -4,7 +4,9 @@ import "./App.css";
 
 function App() {
     return (
-        <Background />
+        <React.StrictMode>
+            <Background />
+        </React.StrictMode>
     );
 }
 
