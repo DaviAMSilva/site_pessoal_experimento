@@ -7,17 +7,21 @@ import { ReactP5Wrapper } from "react-p5-wrapper";
 
 const backgroundSketch = (s) => {
     // Algumas constantes
-    let squareSize = 40;    // Tamanho de cada quadrado
-    let squareBorder = 10;  // Borda máxima entre os quadrados
-    let gridMargin = 1;     // Quantidade de quadrados fora da tela em cada lado
-    let maxSquareSize = 4;  // Lado do maior quadrado possível
+    let squareSize = 40;            // Tamanho de cada quadrado
+    let squareBorder = 10;          // Borda máxima entre os quadrados
+    let gridMargin = 1;             // Quantidade de quadrados fora da tela em cada lado
+    let maxSquareSize = 4;          // Lado do maior quadrado possível
+    let gridX, gridY;               // Quantidade de quadrados na horizontal e na vertical
 
-    let finished = false;   // Se a animação já terminou
-    let gridX, gridY;       // Precisam ser calculados dentro de setup()
-    let lampImage;          // /\ /\ /\
+    let animationFinished = false;  // Se a animação já terminou
+    let loadImageError = false;     // Se ocorreu um erro ao carregar a imagem
+    let canvasIsLit = true;         // Se o canvas está aceso
 
-    let rectangles = [];    // Guarda todos os retângulos
-    let grid = [];          // Guarda o estado (usado ou não) de cada quadrado
+    let litLampImage;               // Imagem da lâmpada acesa
+    let unlitLampImage;             // Imagem da lâmpada apagada
+
+    let rectangles = [];            // Guarda todos os retângulos
+    let grid = [];                  // Guarda o estado (usado ou não) de cada quadrado
 
     // Direções
     const LEFT = [1, 0, 0, 0];
@@ -174,15 +178,15 @@ const backgroundSketch = (s) => {
             s.noStroke();
 
             // Desenha o retângulo. Se o retângulo for uma imagem, ela é desenhada como uma imagem, senão, como um retângulo
-            if (rectangle.isImage) {
+            if (rectangle.isImage && !loadImageError) {
                 s.image(
-                    lampImage,
+                    canvasIsLit ? litLampImage : unlitLampImage,
                     (rectangle.drawLeft - gridMargin) * squareSize + border,
                     (rectangle.drawTop - gridMargin) * squareSize + border,
                     (rectangle.drawRight - rectangle.drawLeft + 1) * squareSize - border * 2,
                     (rectangle.drawBottom - rectangle.drawTop + 1) * squareSize - border * 2
                 );
-            } else {
+            } else if (canvasIsLit) {
                 s.rect(
                     (rectangle.drawLeft - gridMargin) * squareSize + border,
                     (rectangle.drawTop - gridMargin) * squareSize + border,
@@ -195,16 +199,23 @@ const backgroundSketch = (s) => {
 
 
 
-    s.preload = () => {
-        lampImage = s.loadImage("/logo192.png");
-    }
-
-
-
     s.setup = () => {
         s.createCanvas(s.windowWidth, s.windowHeight);
-        s.background(0);
+        s.background(10, 10, 20);
         s.noiseDetail(2, 0.5);
+
+
+
+        // Carrega as imagens e trada das exceções
+        litLampImage = s.loadImage("/images/lamp/lit192.png", () => { }, (e) => {
+            loadImageError = loadImageError || true;
+            console.error(e);
+        });
+        unlitLampImage = s.loadImage("/images/lamp/unlit192.png", () => { }, (e) => {
+            loadImageError = loadImageError || true;
+            console.error(e);
+        });
+
 
 
 
@@ -232,15 +243,15 @@ const backgroundSketch = (s) => {
 
 
         // Inicializa o primeiro retângulo em um local aleatório mais ou menos central
-        let ii = Math.floor(s.random(0.25, 0.75) * gridX);
-        let jj = Math.floor(s.random(0.25, 0.75) * gridY);
+        let ii = Math.floor(s.random(0.40, 0.60) * gridX);
+        let jj = Math.floor(s.random(0.40, 0.60) * gridY);
         rectangles.push(new Rectangle(ii, ii + maxSquareSize - 1, jj, jj + maxSquareSize - 1, true));
     }
 
 
 
     s.draw = () => {
-        s.background(0);
+        s.background(10, 10, 20);
 
 
 
@@ -252,7 +263,7 @@ const backgroundSketch = (s) => {
 
 
         // Nada a fazer daqui para baixo se tiver acabado
-        if (finished)
+        if (animationFinished)
             return;
 
         let currentRectangle = rectangles[rectangles.length - 1];
@@ -282,7 +293,7 @@ const backgroundSketch = (s) => {
 
                 if (newRectangle === null) {
                     // Não há mais retângulos para criar
-                    finished = true;
+                    animationFinished = true;
                     return;
                 }
 
@@ -290,17 +301,50 @@ const backgroundSketch = (s) => {
             }
         }
     }
+
+
+
+    s.mouseReleased = s.touchEnded = () => {
+        let rectangle = rectangles[0];
+
+        // Troca o estado aceso do canvas quando o mouse/toque é solto em cima da lâmpada
+        if (animationFinished &&
+            s.mouseX > (rectangle.left - gridMargin) * squareSize &&
+            s.mouseX < (rectangle.right - gridMargin + 1) * squareSize &&
+            s.mouseY > (rectangle.top - gridMargin) * squareSize &&
+            s.mouseY < (rectangle.bottom - gridMargin + 1) * squareSize
+        ) {
+            canvasIsLit = !canvasIsLit;
+        }
+
+        // Previne a ação padrão do mouse
+        return false;
+    }
 }
+
+
 
 
 
 const Background = () => {
+    const backgroundStyle = {
+        backgroundColor: "rgb(10, 10, 20)",
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: -1
+    };
+
     return (
-        <div id="background" alt="Plano de fundo futurista com retângulos azuis e uma imagem de uma lâmpada">
+        <div id="background" alt="Plano de fundo futurista com retângulos azuis e uma imagem de uma lâmpada" style={backgroundStyle}>
             <ReactP5Wrapper sketch={backgroundSketch} />
         </div>
     );
 }
+
+
 
 
 
