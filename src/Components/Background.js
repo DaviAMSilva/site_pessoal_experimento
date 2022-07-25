@@ -114,7 +114,7 @@ const backgroundSketch = (s) => {
             return null;
         }
 
-        let resultSquare = possibleSquares[Math.floor(Math.random() * possibleSquares.length)];
+        let resultSquare = possibleSquares[s.floor(s.random() * possibleSquares.length)];
         return new Rectangle(resultSquare.i, resultSquare.i, resultSquare.j, resultSquare.j);
     }
 
@@ -153,29 +153,8 @@ const backgroundSketch = (s) => {
 
     function drawRectangles() {
         for (let rectangle of rectangles) {
-            // Transição suave da posição
-            rectangle.smoothTransition();
-
-            // É a distância entre o meio do retângulo e o mouse
-            let distToMouse = s.dist(s.mouseX, s.mouseY, rectangle.left * squareSize + squareSize / 2, rectangle.top * squareSize + squareSize / 2);
-
-            // O tamanho da borda é baseado na distância até mouse e na posição do retângulo
-            // A distância até o mouse deixa a borda maior quanto mais próxima do mouse
-            // A posição do retângulo passa por uma função de Perlin Noise que cria uma animação que evolui
-            let border = squareBorder * Math.max(
-                s.noise(rectangle.drawLeft / 25, rectangle.drawTop / 25, s.frameCount / 100),
-                s.map(distToMouse, 0, Math.max(s.width / 2, s.height / 2), 0.6, 0, true)
-            );
-
-            // A cor do retângulo é baseada na proporção entre o comprimento e a altura do retângulo
-            // Retângulos altos tem uma cor mais clara
-            // Retângulos longos tem uma cor mais escura
-            s.fill(s.lerpColor(
-                s.color(0, 0, 100),
-                s.color(25, 25, 255),
-                s.map((rectangle.drawRight - rectangle.drawLeft + 1) / (rectangle.drawBottom - rectangle.drawTop + 1), 1 / maxSquareSize, maxSquareSize, 0, 1)
-            ));
-            s.noStroke();
+            let distToMouse = 0;
+            let border = 0;
 
             // Desenha o retângulo. Se o retângulo for uma imagem, ela é desenhada como uma imagem, senão, como um retângulo
             if (rectangle.isImage && !loadImageError) {
@@ -187,6 +166,30 @@ const backgroundSketch = (s) => {
                     (rectangle.drawBottom - rectangle.drawTop + 1) * squareSize - border * 2
                 );
             } else if (canvasIsLit) {
+                // Transição suave da posição
+                rectangle.smoothTransition();
+
+                // A cor do retângulo é baseada na proporção entre o comprimento e a altura do retângulo
+                // Retângulos altos tem uma cor mais clara
+                // Retângulos longos tem uma cor mais escura
+                s.fill(s.lerpColor(
+                    s.color(0, 0, 100),
+                    s.color(25, 25, 255),
+                    s.map((rectangle.drawRight - rectangle.drawLeft + 1) / (rectangle.drawBottom - rectangle.drawTop + 1), 1 / maxSquareSize, maxSquareSize, 0, 1)
+                ));
+                s.noStroke();
+
+                // É a distância entre o meio do retângulo e o mouse
+                distToMouse = s.dist(s.mouseX, s.mouseY, rectangle.left * squareSize + squareSize / 2, rectangle.top * squareSize + squareSize / 2);
+
+                // O tamanho da borda é baseado na distância até mouse e na posição do retângulo
+                // A distância até o mouse deixa a borda maior quanto mais próxima do mouse
+                // A posição do retângulo passa por uma função de Perlin Noise que cria uma animação que evolui
+                border = squareBorder * s.max(
+                    s.noise(rectangle.drawLeft / 25, rectangle.drawTop / 25, s.frameCount / 100),
+                    s.map(distToMouse, 0, s.max(s.width / 2, s.height / 2), 0.6, 0, true)
+                );
+
                 s.rect(
                     (rectangle.drawLeft - gridMargin) * squareSize + border,
                     (rectangle.drawTop - gridMargin) * squareSize + border,
@@ -199,10 +202,47 @@ const backgroundSketch = (s) => {
 
 
 
+    // Realiza o cálculo e definição de todas as configurações que precisa ser recarregadas toda vez que a tela é redimensionada/criada
+    s.configureSketch = () => {
+        s.resizeCanvas(window.innerWidth, window.innerHeight);
+        rectangles = [];
+        grid = [];
+        animationFinished = false
+        loadImageError = false
+        canvasIsLit = true
+
+
+
+        // Calcula o tamanho da grade
+        gridX = s.ceil((s.width + gridMargin * squareSize * 2) / squareSize);
+        gridY = s.ceil((s.height + gridMargin * squareSize * 2) / squareSize);
+
+
+
+        // Inicializa a grade
+        grid = [];
+        for (let i = 0; i < gridX; i++) {
+            grid[i] = [];
+            for (let j = 0; j < gridY; j++) {
+                grid[i][j] = new Square(i, j, false);
+            }
+        }
+
+
+
+        // Inicializa o primeiro retângulo em um local aleatório mais ou menos no canto
+        let i = 2 + s.floor(s.random(2));
+        let j = 2 + s.floor(s.random(2));
+        rectangles.push(new Rectangle(i, i + maxSquareSize - 1, j, j + maxSquareSize - 1, true));
+    }
+
+
+
     s.setup = () => {
         s.createCanvas(s.windowWidth, s.windowHeight);
         s.background(10, 10, 20);
         s.noiseDetail(2, 0.5);
+        s.describe("Plano de fundo futurista com retângulos azuis e uma imagem de uma lâmpada"); // Usado para acessibilidade
 
 
 
@@ -216,36 +256,7 @@ const backgroundSketch = (s) => {
             console.error(e);
         });
 
-
-
-
-        // Isso é melhor do que usar hooks
-        window.addEventListener("resize", () => {
-            s.resizeCanvas(s.windowWidth, s.windowHeight);
-        });
-
-
-
-        // Calcula o tamanho da grade
-        gridX = Math.ceil((s.width + gridMargin * squareSize * 2) / squareSize);
-        gridY = Math.ceil((s.height + gridMargin * squareSize * 2) / squareSize);
-
-
-
-        // Inicializa a grade
-        for (let i = 0; i < gridX; i++) {
-            grid[i] = [];
-            for (let j = 0; j < gridY; j++) {
-                grid[i][j] = new Square(i, j, false);
-            }
-        }
-
-
-
-        // Inicializa o primeiro retângulo em um local aleatório mais ou menos central
-        let ii = Math.floor(s.random(0.40, 0.60) * gridX);
-        let jj = Math.floor(s.random(0.40, 0.60) * gridY);
-        rectangles.push(new Rectangle(ii, ii + maxSquareSize - 1, jj, jj + maxSquareSize - 1, true));
+        s.configureSketch();
     }
 
 
@@ -262,8 +273,8 @@ const backgroundSketch = (s) => {
 
 
 
-        // Nada a fazer daqui para baixo se tiver acabado
-        if (animationFinished)
+        // Nada a fazer daqui para baixo se tiver acabado ou não for visível
+        if (animationFinished || !canvasIsLit)
             return;
 
         let currentRectangle = rectangles[rectangles.length - 1];
@@ -272,9 +283,9 @@ const backgroundSketch = (s) => {
 
         if (currentRectangle) {
             // Tenta expandir o retângulo. As vezes o retângulo não é expandido apesar de ser possível mas isso gera um efeito mais interessante
-            tryGrowRectangle(currentRectangle, DIRS[Math.floor(Math.random() * DIRS.length)]);
-            tryGrowRectangle(currentRectangle, DIRS[Math.floor(Math.random() * DIRS.length)]);
-            let ableToGrow = tryGrowRectangle(currentRectangle, DIRS[Math.floor(Math.random() * DIRS.length)]);
+            tryGrowRectangle(currentRectangle, DIRS[s.floor(s.random() * DIRS.length)]);
+            tryGrowRectangle(currentRectangle, DIRS[s.floor(s.random() * DIRS.length)]);
+            let ableToGrow = tryGrowRectangle(currentRectangle, DIRS[s.floor(s.random() * DIRS.length)]);
 
 
 
@@ -287,6 +298,8 @@ const backgroundSketch = (s) => {
                             grid[i][j].used = true;
                     }
                 }
+
+
 
                 // Cria um novo retângulo
                 let newRectangle = createValidRectangle();
@@ -304,22 +317,33 @@ const backgroundSketch = (s) => {
 
 
 
-    s.mouseReleased = s.touchEnded = () => {
+    s.mousePressed = s.touchStarted = (e) => {
+        // No mobile o evento é chamado duas vezes, uma vez quando
+        // o usuário toca na tela e outra quando o usuário remove o toque
+        // Isso permite ignorar o segundo evento
+        if (e.which === 0)
+            return;
+
         let rectangle = rectangles[0];
 
         // Troca o estado aceso do canvas quando o mouse/toque é solto em cima da lâmpada
-        if (animationFinished &&
-            s.mouseX > (rectangle.left - gridMargin) * squareSize &&
+        if (s.mouseX > (rectangle.left - gridMargin) * squareSize &&
             s.mouseX < (rectangle.right - gridMargin + 1) * squareSize &&
             s.mouseY > (rectangle.top - gridMargin) * squareSize &&
             s.mouseY < (rectangle.bottom - gridMargin + 1) * squareSize
         ) {
             canvasIsLit = !canvasIsLit;
         }
-
-        // Previne a ação padrão do mouse
-        return false;
     }
+
+
+
+
+    // Esse listener reinicia o sketch quando o tamanho da janela é alterado
+    // Esse método funciona melhor do que tentar usar hooks do React
+    window.addEventListener("resize", () => {
+        s.configureSketch();
+    });
 }
 
 
@@ -327,18 +351,8 @@ const backgroundSketch = (s) => {
 
 
 const Background = () => {
-    const backgroundStyle = {
-        backgroundColor: "rgb(10, 10, 20)",
-        width: "100%",
-        height: "100%",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        zIndex: -1
-    };
-
     return (
-        <div id="background" alt="Plano de fundo futurista com retângulos azuis e uma imagem de uma lâmpada" style={backgroundStyle}>
+        <div id="background">
             <ReactP5Wrapper sketch={backgroundSketch} />
         </div>
     );
