@@ -1,5 +1,6 @@
 import React from "react";
 import { ReactP5Wrapper } from "react-p5-wrapper";
+import "../Styles/Background.scss";
 
 
 
@@ -204,7 +205,7 @@ const backgroundSketch = (s) => {
 
     // Realiza o cálculo e definição de todas as configurações que precisa ser recarregadas toda vez que a tela é redimensionada/criada
     s.configureSketch = () => {
-        s.resizeCanvas(window.innerWidth, window.innerHeight);
+        s.resizeCanvas(window.outerWidth, window.outerHeight);
         rectangles = [];
         grid = [];
         animationFinished = false
@@ -231,9 +232,9 @@ const backgroundSketch = (s) => {
 
 
         // Inicializa o primeiro retângulo em um local aleatório mais ou menos no canto
-        let i = 2 + s.floor(s.random(2));
-        let j = 2 + s.floor(s.random(2));
-        rectangles.push(new Rectangle(i, i + maxSquareSize - 1, j, j + maxSquareSize - 1, true));
+        let ii = 2 + s.floor(s.random(2));
+        let jj = 3 + s.floor(s.random(2));
+        rectangles.push(new Rectangle(ii, ii + maxSquareSize - 1, jj, jj + maxSquareSize - 1, true));
     }
 
 
