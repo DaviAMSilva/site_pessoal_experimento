@@ -2,6 +2,11 @@
     "name": "daviamsilva.com",
     "version": "1.0.0",
     "private": true,
+    "author": {
+        "name": "Davi Augusto Moreira da Silva",
+        "email": "daviamsilva@hotmail.com"
+    },
+    "homepage": "daviamsilva.com",
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.1.1",
         "@fortawesome/free-brands-svg-icons": "^6.1.1",
@@ -14,12 +19,13 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-p5-wrapper": "^3.3.0",
+        "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.1",
         "sass": "^1.54.0"
     },
     "scripts": {
         "start": "node server/index.js",
-        "express": "node server/index.js",
+        "express": "npx nodemon node server/index.js",
         "react": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
@@ -45,6 +51,13 @@
     },
     "devDependencies": {
         "eslint": "^8.20.0",
-        "eslint-plugin-react": "^7.30.1"
+        "eslint-plugin-react": "^7.30.1",
+        "nodemon": "^2.0.19"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "src/",
+            "public/"
+        ]
     }
 }

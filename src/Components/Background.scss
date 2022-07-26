@@ -1,7 +1,7 @@
-@import "_Colors.scss";
+@import "../Styles/_Colors.scss";
 
 #background {
-    background-color: $background-blue;
+    background-color: $background-blue-dark;
     width: 100vw;
     height: 100vh;
     position: absolute;

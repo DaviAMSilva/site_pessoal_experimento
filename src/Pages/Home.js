@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
-import "../Styles/Description.scss";
+import "./Home.scss";
 
-const Description = () => {
+const Home = () => {
     return (
-        <div id="description-wrapper">
-            <div id="description">
+        <div id="home-wrapper">
+            <div id="home">
                 <div id="code-dots">
                     <FontAwesomeIcon icon="circle" color="#ff5f5a" />
                     <FontAwesomeIcon icon="circle" color="#ffbe2e" />
@@ -24,4 +24,4 @@ const Description = () => {
     )
 };
 
-export default Description;
+export default Home;

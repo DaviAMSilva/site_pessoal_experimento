@@ -1,0 +1,85 @@
+@import "../Styles/_Colors.scss";
+@import "../Styles/_Medias.scss";
+
+#header {
+    background-color: $header;
+    color: $text;
+    box-shadow: 0 0 0.75em $background-blue-dark;
+
+    position: relative;
+    display: block;
+    width: 100vw;
+    z-index: 2;
+
+    >.header-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        list-style: none;
+        padding: 0;
+
+        >.header-list-item>.header-link {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+
+            height: 100%;
+            padding: 0.5em 1em;
+            width: 100%;
+
+            background-color: $header;
+
+            &:hover, &:active {
+                background-color: $header-highlight;
+            }
+
+            &.active {
+                color: $blue !important;
+            }
+
+            &:visited {
+                color: $text;
+            }
+
+            >.header-text {
+                padding-left: 0.5em;
+            }
+
+            @include desktop {
+                font-size: min(2.5vw, 2em);
+            }
+
+            @include mobile {
+                font-size: 1.5em;
+                width: 100vw;
+                padding: 0.5em 0.5em;
+            }
+        }
+    }
+
+    .header-hamburger {
+        font-size: 1.5em;
+        padding: 0.5em 0.5em;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $header-highlight;
+        }
+
+        @include desktop {
+            display: none;
+        }
+
+        @include mobile {
+            display: block;
+        }
+    }
+
+
+
+    .header-mobile-hidden {
+        @include mobile {
+            display: none;
+        }
+    }
+}

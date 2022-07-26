@@ -1,11 +1,16 @@
+/* eslint-env node */
+
 const express = require("express");
-const server = express();
 const path = require("path");
 
-const port = process.env.PORT || 3000;
+const routes = require("./routes");
 
-server.use(express.static(path.join(__dirname, "..", "build")));
+const server = express();
+const port = process.env.PORT || 3001;
+
+server.use(routes);
+server.use(express.static(path.join(__dirname, "../build")));
 
 server.listen(port, () => {
     console.log(`Escutando na porta: ${port}`);
-})
+});
