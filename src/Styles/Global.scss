@@ -8,11 +8,21 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    touch-action: none;
     background-color: $background-blue-dark;
 
     font-family: "Fira Code", monospace;
     color: $text;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+
+    #content {
+        flex: 1 0 auto;
+    }
 }
 
 a {
