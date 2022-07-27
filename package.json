@@ -2,6 +2,7 @@
     "name": "daviamsilva.com",
     "version": "1.0.0",
     "private": true,
+    "license": "GPLv3",
     "author": {
         "name": "Davi Augusto Moreira da Silva",
         "email": "daviamsilva@hotmail.com"
