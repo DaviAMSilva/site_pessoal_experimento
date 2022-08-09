@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import $ from "jquery";
+import PropTypes from "prop-types";
 import React from "react";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import "./Header.scss";
@@ -8,7 +9,6 @@ import "./Header.scss";
 
 
 
-// eslint-disable-next-line react/prop-types
 const HeaderLink = ({ to, icon, children }) => {
     const resolvedPath = useResolvedPath(to);
     const isActive = useMatch({ path: resolvedPath.pathname });
@@ -23,6 +23,12 @@ const HeaderLink = ({ to, icon, children }) => {
     )
 };
 
+HeaderLink.propTypes = {
+    to: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
+    children: PropTypes.string.isRequired
+};
+
 
 
 
@@ -31,6 +37,10 @@ const Header = () => {
     React.useEffect(() => {
         $(".header-hamburger").on("click", () => {
             $(".header-list").toggleClass("header-mobile-hidden");
+        });
+
+        $(".header-list-item").on("click", () => {
+            $(".header-list").addClass("header-mobile-hidden");
         });
     }, []);
 

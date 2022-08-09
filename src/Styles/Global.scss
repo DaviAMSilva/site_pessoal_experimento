@@ -2,6 +2,11 @@
 
 /* Contém scss aplicável a todo o documento */
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
 body {
     height: 100vh;
     width: 100vw;
@@ -14,17 +19,6 @@ body {
     color: $text;
 }
 
-#root {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vw;
-
-    #content {
-        flex: 1 0 auto;
-    }
-}
-
 a {
     text-decoration: none;
     color: $text;
@@ -34,7 +28,24 @@ a {
     }
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+
+    #content {
+        flex: 1;
+        overflow: auto;
+    }
+}
+
+#cat404 {
+    width: 100vw;
+    height: 100vh;
+    object-fit: scale-down;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
 }

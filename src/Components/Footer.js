@@ -1,8 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from 'prop-types';
 import React from 'react';
 import "./Footer.scss";
 
-// eslint-disable-next-line react/prop-types
+
+
+
+
 const IconLink = ({ icon, text, href, title, classPrefix }) => {
     return (
         <li className={`${classPrefix}-item`}>
@@ -11,7 +15,19 @@ const IconLink = ({ icon, text, href, title, classPrefix }) => {
             </a>
         </li>
     )
-}
+};
+
+IconLink.propTypes = {
+    text: PropTypes.string,
+    title: PropTypes.string,
+    icon: PropTypes.string,
+    href: PropTypes.string.isRequired,
+    classPrefix: PropTypes.string.isRequired
+};
+
+
+
+
 
 const Footer = () => {
     return (
@@ -39,5 +55,9 @@ const Footer = () => {
         </footer>
     )
 };
+
+
+
+
 
 export default Footer;

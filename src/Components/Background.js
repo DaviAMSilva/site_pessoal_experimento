@@ -267,6 +267,23 @@ const backgroundSketch = (s) => {
 
 
 
+
+
+        // Troca o cursor quando o mouse está sobre a lâmpada
+        if (s.mouseX > (rectangles[0].left - gridMargin) * squareSize &&
+            s.mouseX < (rectangles[0].right - gridMargin + 1) * squareSize &&
+            s.mouseY > (rectangles[0].top - gridMargin) * squareSize &&
+            s.mouseY < (rectangles[0].bottom - gridMargin + 1) * squareSize
+        ) {
+            s.cursor(s.HAND);
+        } else {
+            s.cursor(s.ARROW);
+        }
+
+
+
+
+
         // Desenha os retângulos
         drawRectangles();
 
@@ -336,6 +353,7 @@ const backgroundSketch = (s) => {
             canvasIsLit = !canvasIsLit;
         }
     }
+
 
 
 

@@ -1,0 +1,112 @@
+@import "../Styles/_Colors.scss";
+@import "../Styles/_Medias.scss";
+
+#contact-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 2em;
+    gap: 1em;
+
+    .contact-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .contact-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            align-self: center;
+        }
+
+        .contact-list {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            list-style: none;
+            padding: 0;
+            width: 100%;
+
+            .contact-link {
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+
+                .contact-text {
+                    margin-left: 0.5em;
+                }
+            }
+        }
+
+        &.main-contacts {
+            .contact-list {
+                font-size: min(10vw, 5em);
+                display: inline;
+                width: -moz-fit-content;
+                width: fit-content;
+
+                @include mobile {
+                    font-size: min(25vw, 10em);
+                    flex-direction: row;
+                    display: flex;
+                    flex-wrap: nowrap;
+                    justify-content: space-between;
+
+                    .contact-item {
+                        margin: 0.25em;
+                        margin-top: 0;
+                    }
+
+                    .contact-text {
+                        display: none;
+                    }
+                }
+
+                .contact-item {
+                    width: 100%;
+                }
+            }
+        }
+
+        &.secondary-contacts {
+            .contact-list {
+                font-size: min(10vw, 3em);
+                justify-content: center;
+
+                @include mobile {
+                    justify-content: flex-start;
+                    font-size: min(12vw, 3em);
+                }
+
+                .contact-item {
+                    margin-left: 0.5em;
+                    margin-right: 0.5em;
+                    margin-bottom: 0.25em;
+                }
+            }
+        }
+
+        .contact-text {
+            font-size: 0.5em;
+        }
+    }
+
+    .contact-name {
+        font-size: 2em;
+        font-weight: bold;
+        color: $blue;
+        text-align: center;
+        margin: 0.5em;
+        padding-bottom: 0.5em;
+
+        @include mobile {
+            font-size: 1.25em;
+            text-align: center;
+        }
+    }
+}

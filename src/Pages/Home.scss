@@ -13,10 +13,12 @@
     width: 100vw;
     flex-direction: column;
     z-index: 1;
+    pointer-events: none;
 
 
 
     >#home {
+        pointer-events: auto;
         background-color: $background;
         padding: 0.5em;
         border: 10px solid $border;
