@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from 'prop-types';
 import React from 'react';
 import "./Footer.scss";
+import LanguageContext from "../contexts/Language";
 
 
 
@@ -30,11 +31,13 @@ IconLink.propTypes = {
 
 
 const Footer = () => {
+    let lang = React.useContext(LanguageContext);
+
     return (
         <footer id="footer">
             <nav id="footer-nav">
                 <div className="tools-wrapper">
-                    <span className="tools-made-with">Desenvolvido com:</span>
+                    <span className="tools-made-with">{lang.footer.developed_with}</span>
                     <ul className="tools-list">
                         <IconLink classPrefix="tools" title="JavaScript" icon="fa-brands fa-js" href="https://developer.mozilla.org/pt-BR/JavaScript" />
                         <IconLink classPrefix="tools" title="React.js" icon="fa-brands fa-react" href="https://reactjs.org/" />

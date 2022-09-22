@@ -15,50 +15,71 @@
         >.header-list {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-evenly;
+            justify-content: space-around;
             list-style: none;
-            padding: 0;
+            padding: 0em;
 
             // Causa a lista a aparecer em cima do conteúdo
             // ao invés de mover ele para baixo
             @include mobile {
                 position: absolute;
+                flex-direction: column;
             }
 
-            >.header-list-item>.header-link {
-                display: flex;
-                align-items: center;
-                font-weight: bold;
+            background-color: $header;
 
-                padding: 0.5em 1em;
+            >.header-list-item {
+                >.header-link {
+                    display: flex;
+                    align-items: center;
+                    font-weight: bold;
 
-                background-color: $header;
+                    padding: 0.5em 1em;
 
-                &:hover,
-                &:active {
-                    background-color: $header-highlight;
+                    &:hover,
+                    &:active {
+                        background-color: $header-highlight;
+                    }
+
+                    &.active {
+                        color: $blue !important;
+                    }
+
+                    &:visited {
+                        color: $text;
+                    }
+
+                    >.header-text {
+                        padding-left: 0.5em;
+                    }
+
+                    @include desktop {
+                        font-size: min(2.5vw, 2em);
+                    }
+
+                    @include mobile {
+                        font-size: 1.5em;
+                        width: 100vw;
+                        padding: 0.5em 0.5em;
+                    }
                 }
 
-                &.active {
-                    color: $blue  !important;
-                }
+                >.header-flag {
+                    padding: 0em 0.5em;
+                    height: 100%;
 
-                &:visited {
-                    color: $text;
-                }
+                    // Centraliza a bandeira horizontalmente no modo mobile
+                    justify-content: center;
 
-                >.header-text {
-                    padding-left: 0.5em;
-                }
+                    @include desktop {
+                        font-size: min(3.5vw, 3em);
+                    }
 
-                @include desktop {
-                    font-size: min(2.5vw, 2em);
-                }
-
-                @include mobile {
-                    font-size: 1.5em;
-                    width: 100vw;
-                    padding: 0.5em 0.5em;
+                    @include mobile {
+                        font-size: 2.5em;
+                        width: 100vw;
+                        padding: 0.2em 0em;
+                    }
                 }
             }
         }

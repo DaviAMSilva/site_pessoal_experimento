@@ -1,0 +1,50 @@
+{
+    "pt": {
+        "lang_code": "pt",
+        "country_code": "BR",
+        "header": {
+            "home": "Home",
+            "about": "Sobre",
+            "projects": "Projetos",
+            "contact": "Contato"
+        },
+        "pages": {
+            "home": {
+                "line1": "Hello World",
+                "line2": "meu_nome",
+                "line3": "Cientista da Computação"
+            },
+            "contact": {
+                "main_contacts_title": "Contato",
+                "secondary_contacts_title": "Links"
+            }
+        },
+        "footer": {
+            "developed_with": "Desenvolvido com:"
+        }
+    },
+    "en": {
+        "lang_code": "en",
+        "country_code": "US",
+        "header": {
+            "home": "Home",
+            "about": "About",
+            "projects": "Projects",
+            "contact": "Contact"
+        },
+        "pages": {
+            "home": {
+                "line1": "Hello World",
+                "line2": "my_name",
+                "line3": "Computer Scientist     "
+            },
+            "contact": {
+                "main_contacts_title": "Contact",
+                "secondary_contacts_title": "Links"
+            }
+        },
+        "footer": {
+            "developed_with": "Developed with:"
+        }
+    }
+}

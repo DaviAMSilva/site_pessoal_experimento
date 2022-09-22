@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
 import "./Contact.scss";
+import LanguageContext from "../contexts/Language";
 
 
 
@@ -51,15 +52,17 @@ ContactSection.propTypes = {
 
 
 const Contact = () => {
+    let lang = React.useContext(LanguageContext);
+
     return (
         <div id="contact-wrapper">
-            <ContactSection extraClasses="main-contacts" text="Contato">
+            <ContactSection extraClasses="main-contacts" text={lang.pages.contact.main_contacts_title}>
                 <>
                     <ContactIconLink icon="fa-brands fa-linkedin" title="/in/daviamsilva" text="/in/daviamsilva" href="https://www.linkedin.com/in/daviamsilva/" />
                     <ContactIconLink icon="fa-solid fa-envelope" title="daviamsilva@hotmail.com" text="daviamsilva@hotmail.com" href="mailto:daviamsilva@hotmail.com" />
                 </>
             </ContactSection>
-            <ContactSection extraClasses="secondary-contacts" text="Links">
+            <ContactSection extraClasses="secondary-contacts" text={lang.pages.contact.secondary_contacts_title}>
                 <>
                     <ContactIconLink icon="fa-brands fa-github" title="github.com/daviamsilva" text="Github" href="https://www.github.com/daviamsilva" />
                     <ContactIconLink icon="fa-solid fa-house-user" title="daviamsilva.github.io" text="github.io" href="http://daviamsilva.github.io" />

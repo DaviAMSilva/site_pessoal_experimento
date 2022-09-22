@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import "./Header.scss";
+import ReactCountryFlag from "react-country-flag"
+import LanguageContext from "../contexts/Language";
 
 
 
@@ -33,7 +35,9 @@ HeaderLink.propTypes = {
 
 
 
-const Header = () => {
+const Header = (props) => {
+    let lang = React.useContext(LanguageContext);
+
     React.useEffect(() => {
         $(".header-hamburger").on("click", () => {
             $(".header-list").toggleClass("header-mobile-hidden");
@@ -51,14 +55,26 @@ const Header = () => {
                     <FontAwesomeIcon icon="bars"></FontAwesomeIcon>
                 </a>
                 <ul className="header-list header-mobile-hidden">
-                    <HeaderLink to="/" icon="house">Home</HeaderLink>
-                    <HeaderLink to="/sobre" icon="address-card">Sobre</HeaderLink>
-                    <HeaderLink to="/projetos" icon="code">Projetos</HeaderLink>
-                    <HeaderLink to="/contato" icon="envelope">Contato</HeaderLink>
+                    <HeaderLink to="/" icon="house">{lang.header.home}</HeaderLink>
+                    <HeaderLink to="/sobre" icon="address-card">{lang.header.about}</HeaderLink>
+                    <HeaderLink to="/projetos" icon="code">{lang.header.projects}</HeaderLink>
+                    <HeaderLink to="/contato" icon="envelope">{lang.header.contact}</HeaderLink>
+                    <li className="header-list-item">
+                        <a className="header-flag header-link" onClick={props.changeLang} href="#">
+                            <ReactCountryFlag countryCode={lang.country_code} svg style={{
+                                width: "1em",
+                                height: "1em"
+                            }} title={lang.country_name} />
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </header>
     )
+};
+
+Header.propTypes = {
+    changeLang: PropTypes.func.isRequired
 };
 
 
